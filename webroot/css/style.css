@@ -1,0 +1,138 @@
+.container {
+    border-radius: 5px;
+    border: 1px solid rgba(0,0,0,0.1);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.colour1 {
+    background-color: lightgrey;
+}
+
+.colour2 {
+    background-color: mistyrose;
+}
+
+a.spoiler::after {
+     content: "Закрыть";
+ }
+
+a.spoiler.collapsed::after {
+    content: "Открыть";
+}
+
+.progress-bar {
+    min-width: 20%;
+}
+
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+.navbar {
+    margin-top: 15px;
+}
+
+/*MASONRY*/
+
+@media screen and (max-width: 400px) {
+    .masonry[data-columns]::before {
+        content: '1 .col-xs-12';
+    }
+}
+
+@media screen and (min-width: 401px) and (max-width: 767px) {
+    .masonry[data-columns]::before {
+        content: '2 .col-xs-6';
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .masonry[data-columns]::before {
+        content: '3 .col-xs-4';
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1199px) {
+    .masonry[data-columns]::before {
+        content: '4 .col-xs-3';
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .masonry[data-columns]::before {
+        content: '6 .col-xs-2';
+    }
+}
+
+/*BREADCRUMB*/
+
+.breadcrumb > li + li::before {
+    content: "\f105";
+    font-family: FontAwesome;
+}
+
+/**/
+
+.basket {
+    padding-top: 8px;
+    padding-bottom: 8px;
+	padding-left: 15px;
+}
+
+.last {
+	margin-right: 60px;
+}
+
+.form-control {
+	margin-bottom: 5px;
+}
+
+/* Admin right button */
+
+div.admin-right-button {
+	height: 50px;
+	width: 50px;
+	border-radius: 50px;
+	background-color: #fff;
+	position: fixed;
+	right: 25px;
+	top: 250px;
+	box-shadow: 0px 0px 15px -5px rgba(0,0,0,0.75);
+	z-index: 9999;
+	
+}
+
+div.admin-right-button i {
+	display: inline-block;
+	margin-top: 10px;
+	
+}
+
+/* Table */
+table.table {
+	border: 1px solid #ddd;
+}
+
+table th {
+	text-align: center;
+}
+
+table td {
+	text-align: center;
+}
+
+/* Texarea */
+
+textarea {
+    resize: vertical;
+}
+
+div.tab-pane ul li {
+    list-style: none;
+}
+
+input.cart-input {
+	width: 70px;
+}

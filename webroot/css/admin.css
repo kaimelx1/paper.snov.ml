@@ -1,0 +1,37 @@
+
+.navbar {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+/* - Section Padding */
+.section-padding {
+	padding-top: 50px;
+	padding-bottom: 50px;
+}
+
+table.table {
+	border: 1px solid #ddd;
+}
+
+table.table th {
+	text-align: center;
+}
+
+table.table td {
+	text-align: center;
+}
+
+/* Texarea */
+
+textarea {
+	resize: vertical;
+}
+
+li.btn-group a {
+	cursor: pointer;
+}
+
+label.underline {
+	text-decoration: underline;
+}
