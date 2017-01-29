@@ -19,6 +19,8 @@ class ContactController extends BaseController
      */
     public function index()
     {
+		
+		// data for menu
         $this->nav();
 
         if ($_POST) {
@@ -26,8 +28,10 @@ class ContactController extends BaseController
             $contactModel = new ContactModel();
             $validationResult = $contactModel->validate(($_POST));
 
+			// if vaidation is OK
             if ($validationResult === true) {
 
+				// putting new message
                 if ($contactModel->putMessage($_POST)) {
                     $this->message = $_POST['name'] . ', ваше сообщение отправлено, мы пришлём ответ на вашу электронную почту';
                 } else {
@@ -39,6 +43,7 @@ class ContactController extends BaseController
             }
         }
 
+		// rendering html
         $this->render("contact");
     }
 }

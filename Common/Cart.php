@@ -10,7 +10,7 @@ class Cart
     public static function countItems()
     {
         if (isset($_SESSION['items'])) {
-            // Если массив с товарами есть, то подсчитаем и вернем их количество
+			// if there is array with items, count their quantity and return it
             $count = 0;
             foreach ($_SESSION['items'] as $id => $quantity) {
                 $count = $count + $quantity;
@@ -18,7 +18,7 @@ class Cart
             return $count;
 
         } else {
-            // Если товаров нет, вернем 0
+			// if there are no items, return 0
             return 0;
         }
     }
@@ -28,31 +28,30 @@ class Cart
      */
     public static function addItem($id)
     {
-        // Приводим $id к типу integer
         $id = intval($id);
 
-        // Пустой массив для товаров в корзине
+        // array for items in cart
         $itemsInCart = array();
 
-        // Если в корзине уже есть товары (они хранятся в сессии)
+		// if there are items in cart
         if (isset($_SESSION['items'])) {
-            // То заполним наш массив товарами
+			// fill array with items
             $itemsInCart = $_SESSION['items'];
         }
 
-        // Проверяем есть ли уже такой товар в корзине
+		// checking if this item is in cart
         if (array_key_exists($id, $itemsInCart)) {
-            // Если такой товар есть в корзине, но был добавлен еще раз, увеличим количество на 1
+			// if yes - incrementing it
             $itemsInCart[$id]++;
         } else {
-            // Если нет, добавляем id нового товара в корзину с количеством 1
+			// if no - putting this item's id in cart, quantity = 1
             $itemsInCart[$id] = 1;
         }
 
-        // Записываем массив с товарами в сессию
+		// putting array with items into the session
         $_SESSION['items'] = $itemsInCart;
 
-        // Возвращаем количество товаров в корзине
+		// returning items' quantity (in cart)
         return self::countItems();
     }
 

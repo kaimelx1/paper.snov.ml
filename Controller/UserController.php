@@ -24,17 +24,21 @@ class UserController extends BaseController
 
             $userModel = new UserModel();
 
+			// authenticating
             if ($user = $userModel->login($_POST)) {
+				// setting user's sessions
                 $_SESSION['user'] = $user['name'];
                 $_SESSION['userEmail'] = $user['email'];
                 $_SESSION['userRole'] = $user['role'];
                 $_SESSION['userPassword'] = $user['password'];
 
+				// if this is admin - redirecting into admin's panel
                 if ($_SESSION['userRole'] == 'admin') {
                     header('Location: /admin/index/');
                     die();
                 }
 
+				// if this is user - redirecting into user's cabinet
                 header('Location: /cabinet/index/');
                 die();
 
@@ -43,6 +47,7 @@ class UserController extends BaseController
             }
         }
 		
+		// redirecting
 		header('Location: /');
     }
 
@@ -59,18 +64,23 @@ class UserController extends BaseController
 
                 $validationResult = $userModel->validate($_POST);
 
+				// if validation is OK
                 if ($validationResult === true) {
 
+					// registering new user
                     if ($userModel->register($_POST)) {
+						// setting user's sessions
                         $_SESSION['user'] = htmlspecialchars($_POST['name']);
                         $_SESSION['userEmail'] = htmlspecialchars($_POST['email']);
                         $_SESSION['userRole'] = 'user';
                         $_SESSION['userPassword'] = md5(SALT . htmlspecialchars($_POST['password']));
                         header('Location: /');
                         die();
+						
                     } else {
                         $_SESSION['message'] = 'Произошла ошибка регистрации';
                     }
+					
                 } else {
                     $_SESSION['message'] = $validationResult;
                 }
@@ -80,6 +90,7 @@ class UserController extends BaseController
             }
         }
 		
+		// redirecting
 		header('Location: /');
     }
 
@@ -89,6 +100,7 @@ class UserController extends BaseController
     public function logout()
     {
         if ($_SESSION['user']) {
+			// unsetting user's sessions
             unset($_SESSION['user']);
             unset($_SESSION['userEmail']);
             unset($_SESSION['userPassword']);

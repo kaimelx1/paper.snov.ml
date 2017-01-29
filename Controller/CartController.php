@@ -17,6 +17,7 @@ class CartController extends BaseController
      */
     public function checkout()
     {
+		// if referer is not cart/index or there is no total order's sum
         if (!$_SERVER['HTTP_REFERER'] == '/cart/index/' || !isset($_SESSION['total'])) {
             header('Location: /');
             die;
@@ -24,6 +25,7 @@ class CartController extends BaseController
 
         if ($_POST) {
 
+			// getting user's id by email
             $userModel = new UserModel();
             $id = $userModel->getUserId($_POST['email']);
 
@@ -36,11 +38,13 @@ class CartController extends BaseController
             $orderModel = new OrderModel();
             $validationResult = $orderModel->validate($_POST);
 
+			// if validation is OK
             if ($validationResult === true) {
 
+				// making order
                 if ($lastId = $orderModel->order($_POST, $_SESSION)) {
 
-                    //$this->mailer($_SESSION['total'], $lastId, date('Y-m-d H:i:s'), 'Наш');
+					// unsetting order's sesions
                     unset($_SESSION['items']);
                     unset($_SESSION['total']);
 
@@ -57,7 +61,9 @@ class CartController extends BaseController
             }
         }
 
+		// data for menu
         $this->nav();
+		// rendering html
         $this->render('checkout');
     }
 
@@ -66,25 +72,31 @@ class CartController extends BaseController
      */
     public function index()
     {
+		// data for menu
         $this->nav();
 
         if (isset($_SESSION['items'])) {
 
+			// parsing order
             $orderedItems = array_keys($_SESSION['items']);
             $orderedItems = implode(',', $orderedItems);
             $itemModel = new ItemModel();
 
+			// if there is items in order
             if ($orderedItems) {
 
+				// getting items by ids
                 $result = $itemModel->getItemsByIds($orderedItems);
                 $this->data['ordered'] = $result;
 
-                // Проверяем есть ли в массиве товары (не пустой ли)
+				// checking if there is items in cart
                 if ($_SESSION['items']) {
 
+					// parsing order
                     $itemsIds = array_keys($_SESSION['items']);
                     $itemsIds = implode(',', $itemsIds);
 
+					// total items' quantity
                     $itemsQuantities = 0;
                     foreach ($_SESSION['items'] as $item) {
                         $itemsQuantities += $item;
@@ -92,7 +104,7 @@ class CartController extends BaseController
 
                     $_SESSION['quantity'] = $itemsQuantities;
 
-                    // Если строка сформирована, получаем полную информацию о товарах с модели
+					// getting full information about items
                     if ($itemsIds) {
 
                         $itemModel = new ItemModel();
@@ -109,6 +121,7 @@ class CartController extends BaseController
 
         }
 
+		// rendering html
         $this->render('cart');
 
         if (isset($_SESSION['orderMessage'])) {
@@ -121,8 +134,10 @@ class CartController extends BaseController
      */
     public function edit()
     {
+		// referer verification
         $this->hasReferrer();
 
+		// editing item's quantity
         if ($_POST) {
             foreach ($_POST['items'] as $id => $quantity) {
                 $_SESSION['items'][$id] = $quantity;
@@ -138,8 +153,10 @@ class CartController extends BaseController
      */
     public function add($id)
     {
+		// referer verification
         $this->hasReferrer();
 
+		// adding item
         Cart::addItem($id);
         $path = $_SERVER['HTTP_REFERER'];
         header("Location: $path");
@@ -151,18 +168,20 @@ class CartController extends BaseController
      */
     public function addItemQuantity($data)
     {
+		// referer verification
         $this->hasReferrer();
 
         $id = intval($data[0]);
         $quantity = intval($data[1]);
 
-        // Если в корзине уже есть товары (они хранятся в сессии)
+		// if there is items in cart - they are stored in session
         if (isset($_SESSION['items'][$id])) {
             $_SESSION['items'][$id] += $quantity;
         } else {
             $_SESSION['items'][$id] = $quantity;
         }
 
+		// showing items' count
         echo Cart::countItems();
         return true;
     }
@@ -172,8 +191,10 @@ class CartController extends BaseController
      */
     public function addAjax($id)
     {
+		// referer verification
         $this->hasReferrer();
 
+		// adding item and showing items' count
         echo Cart::addItem($id[0]);
         return true;
     }
@@ -183,6 +204,7 @@ class CartController extends BaseController
      */
     public function clear()
     {
+		// if referer is not '/cart' - redirect onto main page
         $this->refer('/cart', '/');
 
         if (isset($_SESSION['items'])) {
@@ -198,6 +220,7 @@ class CartController extends BaseController
      */
     public function delete($id)
     {
+		// if referer is not '/cart' - redirect onto main page
         $this->refer('/cart', '/');
 
         unset($_SESSION['items'][$id[0]]);
